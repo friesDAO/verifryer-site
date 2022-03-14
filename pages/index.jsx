@@ -101,7 +101,7 @@ const Home = () => {
 		provider.getSigner().signMessage(decodedUserId).then((signedMessage) => {
 			fetch('/api/createDiscordWalletSignature', {
                 body: JSON.stringify({
-					encryptedUserId: router.query.id,
+					encryptedUserId: decodeURIComponent(router.query.id),
                     address: account,
                     signature: signedMessage
                 }),
