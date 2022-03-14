@@ -22,8 +22,9 @@ function useCheckpoint(account, provider, promptConnect, encryptedUserId, comple
 
 	async function getDecryptedId(encryptedId) {
 		if (!(encryptedId in decryptedCache)) {
-			const decryptedId = await axios(`/api/decodeUserId?encryptedUserId=${encryptedId}`).catch(() => {}).data
+			const decryptedId = await axios.get(`/api/decodeUserId?encryptedUserId=${encryptedId}`).then(result => result.data).catch(() => {})
 			decryptedCache[encryptedId] = decryptedId
+			return decryptedId
 		} else {
 			return decryptedCache[encryptedId]
 		}

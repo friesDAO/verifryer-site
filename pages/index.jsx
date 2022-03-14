@@ -33,11 +33,11 @@ const Home = () => {
 	}
 
 	async function verify() {
-		const decodedUserId = await fetch(`/api/decodeUserId?encryptedUserId=${router.query.id}`).then(res => res.json()).catch()
+		const decodedUserId = await fetch(`/api/decodeUserId?encryptedUserId=${router.query.id}`).then(res => res.text()).catch()
 		provider.getSigner().signMessage(decodedUserId).then((signedMessage) => {
 			fetch('/api/createDiscordWalletSignature', {
                 body: JSON.stringify({
-					id: decodedUserId,
+					encryptedUserId: router.query.id,
                     address: account,
                     signature: signedMessage
                 }),
@@ -48,10 +48,6 @@ const Home = () => {
 			})
 		})
 	}
-
-	useEffect(() => {
-		console.log(checkpoint.state)
-	}, [checkpoint.state])
 
 	return (
 		<>
@@ -87,7 +83,7 @@ const Home = () => {
 				<div className={classNames("verify-page", "page", "patterned", "col", "center-m", "center-a", {
 					visible: checkpoint.state == 4
 				})}>
-					<div className="title">link your discord account and wallet</div>
+					<div className="sign-title">link your discord account and wallet</div>
 					<button className="verify primary" onClick={verify}>verify wallet</button>
 				</div>
 
@@ -133,6 +129,10 @@ const Home = () => {
 				}
 
 				.operating-agreement-page {
+					gap: 20px;
+				}
+
+				.verify-page {
 					gap: 20px;
 				}
 				
