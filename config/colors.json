@@ -1,0 +1,24 @@
+{
+    "raw": {
+        "purple": "#7A83EA",
+        "orange": "#E36911",
+        "white": "#FDFDFD",
+        "light-orange": "#fff5f0",
+        "black": "#16191E",
+        "gray": "#afafaf",
+		"light-gray": "#ddd",
+		"dark-tan": "#52443c",
+		"usdc": "#2775CA",
+		"dark-orange": "#171311",
+		"dark-gray": "#505050"
+    },
+
+    "elements": {
+		"bg": "white",
+		"bg-alt": "light-orange",
+		"accent": "orange",
+		"text": "black",
+		"pattern": "light-gray",
+		"disabled": "gray"
+    }
+}

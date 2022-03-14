@@ -1,0 +1,37 @@
+{
+	"name": "verifryer-site",
+	"version": "1.0.0",
+	"description": "verifries your FRIES holdings for the friesDAO discord server",
+	"main": "index.js",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/friesDAO/verifrier-site.git"
+	},
+	"author": "slip1244",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/friesDAO/verifrier-site/issues"
+	},
+	"homepage": "https://github.com/friesDAO/verifrier-site#readme",
+	"dependencies": {
+		"@gimmixorg/use-wallet": "^0.0.31",
+		"@portis/web3": "^4.0.7",
+		"@toruslabs/torus-embed": "^1.20.4",
+		"@walletconnect/web3-provider": "^1.7.3",
+		"aes256": "^1.1.0",
+		"axios": "^0.26.0",
+		"classnames": "^2.3.1",
+		"ethers": "^5.5.4",
+		"faunadb": "^4.5.2",
+		"fortmatic": "^2.2.1",
+		"next": "^12.1.0",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"walletlink": "^2.5.0"
+	}
+}

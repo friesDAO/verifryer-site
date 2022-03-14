@@ -1,2 +1,2 @@
-# the-verifryer
-verifrys FRIES holdings - staked or not
+# verifrier site
+verifries your FRIES holdings for the friesDAO discord server
