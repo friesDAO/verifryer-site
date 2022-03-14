@@ -12,13 +12,23 @@ export default async (req, res) => {
 
 			if (ethers.utils.getAddress(body.address) === signer) {
 				let query = await faunaClient.query(
-					q.Create(q.Collection('discord-wallet-signatures'), {
-						data: {
-							id: decryptedUserId,
-							address: signer,
-							signature: body.signature
-						},
-					})
+					q.If(
+						q.Exists(q.Match(q.Index("id"), decryptedUserId)),
+						q.Update(q.Select('ref', q.Get(q.Match(q.Index("id"), decryptedUserId))), {
+							data: {
+								id: decryptedUserId,
+								address: signer,
+								signature: body.signature
+							},
+						}),
+						q.Create(q.Collection('discord-wallet-signatures'), {
+							data: {
+								id: decryptedUserId,
+								address: signer,
+								signature: body.signature
+							},
+						})
+					)
 				).catch(e => console.log(e))
 				res.status(200).json({ data: query });
 			} else {
