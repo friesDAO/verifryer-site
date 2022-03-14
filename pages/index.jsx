@@ -161,7 +161,7 @@ const Home = () => {
 					visible: checkpoint.state == 5
 				})}>
 					<div className="title">you're all set!</div>
-					<div className="token-desc">go back to the discord to see</div>
+					<div className="token-desc">check back in discord to check out your roles</div>
 				</div>
 
 			</div>
