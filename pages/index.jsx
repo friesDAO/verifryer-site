@@ -8,6 +8,46 @@ import { ethers } from "ethers";
 import useCheckpoint from "../state/useCheckpoint.js"
 import { useRouter } from 'next/router'
 
+const WalletManager = () => {
+	const { account, disconnect } = useWallet()
+
+	function click() {
+		window.open(`${project.explorer}/address/${account}`, '_blank');
+	}
+
+	return (
+		<>
+			<div className="wallet-manager row center-a">
+				<button className={"connect rounded secondary"} onClick={click}>{account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect"}</button>
+				<button className="disconnect tertiary" onClick={disconnect}><i className="fas fa-sign-out-alt"></i></button>
+			</div>
+			
+			<style jsx>{`
+				.wallet-manager {
+					gap: 10px;
+				}
+
+				.connect {
+					font-size: 1.4em;
+					padding: 5px 15px;
+					font-weight: 600;
+				}
+
+				.disconnect {
+					height: 44px;
+					width: 44px;
+					font-size: 1.4em;
+					background-color: var(--bg);
+				}
+
+				.disconnect > i {
+					color: var(--text);
+				}
+			`}</style>
+		</>
+	)
+}
+
 const Home = () => {
 	const router = useRouter()
 	const { account, connect, provider } = useWallet();
@@ -84,6 +124,7 @@ const Home = () => {
 					visible: checkpoint.state == 4
 				})}>
 					<div className="sign-title">link your discord account and wallet</div>
+					<WalletManager />
 					<button className="verify primary" onClick={verify}>verify wallet</button>
 				</div>
 
