@@ -1,5 +1,5 @@
 import { useWallet } from "@gimmixorg/use-wallet"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import getWeb3ModalConfig from "../util/getWeb3ModalConfig.js"
 import project from "../config/project.json"
 import classNames from "classnames";
@@ -53,6 +53,22 @@ const Home = () => {
 	const { account, connect, provider } = useWallet();
 	const [ completed, setCompleted ] = useState(false)
 	const checkpoint = useCheckpoint(account, provider, promptConnect, router.query.id, completed)
+	const [ pdfLoaded, setPdfLoaded ] = useState(false)
+	const pdf = useRef(null)
+	pdf.current?.addEventListener("load", () => setPdfLoaded(true))
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (pdfLoaded) {
+				clearInterval(interval)
+				return
+			}
+			pdf.current.src = "https://docs.google.com/viewerng/viewer?url=https://fries.fund/friesDAO_Operating_Agreement.pdf&embedded=true"
+		}, 2000)
+
+		return () => {
+			clearInterval(interval)
+		}
+	}, [pdfLoaded])
 
 	function promptConnect() {
 		connect(getWeb3ModalConfig())
@@ -73,7 +89,15 @@ const Home = () => {
 	}
 
 	async function verify() {
-		const decodedUserId = await fetch(`/api/decodeUserId?encryptedUserId=${router.query.id}`).then(res => res.text()).catch()
+		const decodedUserId = await fetch(`/api/decodeUserId`, {
+			headers: {
+				"content-type": "application/json"
+			},
+			body: JSON.stringify({
+				encryptedUserId: decodeURIComponent(router.query.id),
+			}),
+			method: "POST"
+		}).then(res => res.text()).catch()
 		provider.getSigner().signMessage(decodedUserId).then((signedMessage) => {
 			fetch('/api/createDiscordWalletSignature', {
                 body: JSON.stringify({
@@ -116,7 +140,12 @@ const Home = () => {
 					visible: checkpoint.state == 3
 				})}>
 					<div className="sign-title">sign the friesDAO <a className="underline" href="https://fries.fund/friesDAO_Operating_Agreement.pdf" target="_blank">operating agreement</a></div>
-					<iframe className="pdf card" src="https://docs.google.com/viewerng/viewer?url=https://fries.fund/friesDAO_Operating_Agreement.pdf&embedded=true" frameborder="0" height="100%" width="100%" />
+					<div className="pdf card">
+						<img className={classNames("spinner", {
+							visible: !pdfLoaded
+						})} src="./spinner.svg" />
+						<iframe ref={pdf} src="https://docs.google.com/viewerng/viewer?url=https://fries.fund/friesDAO_Operating_Agreement.pdf&embedded=true" frameBorder="0" height="100%" width="100%" />
+					</div>
 					<button className="sign primary" onClick={sign}>accept and sign</button>
 				</div>
 
@@ -132,6 +161,7 @@ const Home = () => {
 					visible: checkpoint.state == 5
 				})}>
 					<div className="title">you're all set!</div>
+					<div className="token-desc">go back to the discord to see</div>
 				</div>
 
 			</div>

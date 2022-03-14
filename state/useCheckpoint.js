@@ -11,7 +11,6 @@ let decryptedCache = {}
 function useCheckpoint(account, provider, promptConnect, encryptedUserId, completed) {	
 	async function getSigned(account) {
 		if (!signedCache.includes(account)) {
-			console.log("query sign")
 			const result = await axios.get(`/api/checkSignature?address=${account}`).then(result => result.data)
 			if (result) signedCache.push(account)
 			return result
@@ -22,7 +21,9 @@ function useCheckpoint(account, provider, promptConnect, encryptedUserId, comple
 
 	async function getDecryptedId(encryptedId) {
 		if (!(encryptedId in decryptedCache)) {
-			const decryptedId = await axios.get(`/api/decodeUserId?encryptedUserId=${encryptedId}`).then(result => result.data).catch(() => {})
+			const decryptedId = await axios.post(`/api/decodeUserId`, {
+				encryptedUserId: decodeURIComponent(encryptedId)
+			}).then(result => result.data).catch(() => {})
 			decryptedCache[encryptedId] = decryptedId
 			return decryptedId
 		} else {
