@@ -161,7 +161,7 @@ const Home = () => {
 					visible: checkpoint.state == 5
 				})}>
 					<div className="title">you're all set!</div>
-					<div className="token-desc">check back in <a className="underline" href="https://discord.com/channels/925538083858960424/946539150792880169">discord</a> for members-only content or check out the <a className="underline" href="https://app.fries.fund/">member app</a></div>
+					<div className="token-desc">check back in <a className="underline" href="https://discord.com/channels/925538083858960424/946539150792880169">discord</a> for members-only content or check out the <a className="underline" href="https://app.fries.fund/">members web app</a></div>
 				</div>
 
 			</div>
