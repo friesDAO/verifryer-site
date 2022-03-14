@@ -14,13 +14,16 @@ export default async (req, res) => {
 				let query = await faunaClient.query(
 					q.If(
 						q.Exists(q.Match(q.Index("id"), decryptedUserId)),
-						q.Update(q.Select('ref', q.Get(q.Match(q.Index("id"), decryptedUserId))), {
-							data: {
-								id: decryptedUserId,
-								address: signer,
-								signature: body.signature
-							},
-						}),
+						q.Do(
+							q.Delete(q.Select('ref', q.Get(q.Match(q.Index("id"), decryptedUserId)))),
+							q.Create(q.Collection('discord-wallet-signatures'), {
+								data: {
+									id: decryptedUserId,
+									address: signer,
+									signature: body.signature
+								},
+							})
+						),
 						q.Create(q.Collection('discord-wallet-signatures'), {
 							data: {
 								id: decryptedUserId,
