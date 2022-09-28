@@ -44,11 +44,11 @@ function useCheckpoint(account, provider, promptConnect, encryptedUserId, comple
 
 	async function update() {
 		const decryptedUserId = encryptedUserId ? await getDecryptedId(encryptedUserId) : ""
-		// const _signed = account ? await getSigned(account) : false
+		const _signed = account ? await getSigned(account) : false
 		
 		if (account) {
 			if (decryptedUserId) {
-				if (true) {
+				if (_signed) {
 					if (completed) {
 						setState(5)
 					} else {
